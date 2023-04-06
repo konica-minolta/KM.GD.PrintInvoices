@@ -1,0 +1,79 @@
+.local-button-row {
+  margin: 8px 8px 8px 0;
+}
+.local-full-width {
+  width: 100%;
+}
+.local-mat-form-field {
+  width: 100%;
+}
+
+td {
+  padding-right: 8px;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
+}
+
+.file-row-is-clicked {
+  font-weight: bold;
+}
+.mat-icon-small {
+  height: 20px !important;
+  width: 20px !important;
+  font-size: 20px !important;
+}
+
+/*.mat-dialog-content {
+
+  width: 600px;
+
+}*/
+
+tr.print-detail-row {
+  height: 0;
+}
+tr.print-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.print-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.print-element-row td {
+  border-bottom-width: 0;
+}
+
+.print-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.print-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.print-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.print-element-description {
+  padding: 16px;
+}
+
+.print-element-description-attribution {
+  opacity: 0.5;
+}

@@ -1,0 +1,29 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": true,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:18185",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+   "KM.GD.PrintInvoices": {
+      "windowsAuthentication": true,
+      "anonymousAuthentication": true,
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+         "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5000"
+   }
+  }
+}

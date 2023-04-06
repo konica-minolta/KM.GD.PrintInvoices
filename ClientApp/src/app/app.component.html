@@ -1,0 +1,39 @@
+<body>
+  <app-nav-menu *ngIf="user"></app-nav-menu>
+
+
+
+  <!--<mat-sidenav-content>
+    <app-header></app-header>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>-->
+
+
+
+
+  <div class="container">
+    <alert></alert>
+    <router-outlet></router-outlet>
+
+  </div>
+
+  <!--<mat-toolbar>
+    <span>Hello World</span>
+  </mat-toolbar>-->
+
+  <!-- Footer -->
+  <footer class="page-footer font-small blue">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-right py-3">
+      © 2022 Copyright: <a href="https://www.konicaminolta.it">Konica Minolta</a> <label class="font-weight-lighter">  (v. {{versionApp}})</label>
+    </div>
+    <!-- Copyright -->
+    
+  </footer>
+  <!-- Footer -->
+</body>
+
+

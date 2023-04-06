@@ -1,0 +1,25 @@
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
+
+export const environment = {
+  appVersion:'1.1.3.4',
+  name:"Development",
+  production: false,
+   //use below if you use IIS Express
+ // apiCustomer: 'https://localhost:44381/api/customer',
+  apiUrl: 'http://localhost:18185',
+  //apiUrl: window['apiUrl'] || {},
+  
+  //use below if you have IIS setup for API
+//   apiCustomer: 'https://localhost/api/customer',
+//   apiAccount: 'https://localhost/api/account'
+};
+
+/*
+ * In development mode, to ignore zone related error stack frames such as
+ * `zone.run`, `zoneDelegate.invokeTask` for easier debugging, you can
+ * import the following file, but please comment it out in production mode
+ * because it will have performance impact when throw error
+ */
+// import 'zone.js/dist/zone-error';  // Included with Angular CLI.

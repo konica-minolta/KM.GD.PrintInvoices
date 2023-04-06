@@ -1,0 +1,356 @@
+import { Component, Inject, ViewChild, VERSION, AfterViewInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatDialog, MatDialogConfig  } from '@angular/material/dialog';
+import { AlertCloseComponent } from '../dialogs/alert-close/alert-close.component';
+import { DetailInvoicesComponent } from "../dialogs/detail-invoices/detail-invoices.component";
+import { AlertYesNoComponent } from "../dialogs/alert-yes-no/alert-yes-no.component";
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatFormField } from '@angular/material/form-field';
+
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatButton } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, } from '@angular/material/snack-bar';
+import { PrintInvoiceFiles } from '../_models/PrintInvoiceFiles';
+import { SelectionModel } from '@angular/cdk/collections';
+import { each } from 'jquery';
+import { PrintInvoiceFilesList } from '../_models/PrintInvoiceFilesList';
+
+//import { DataTableDirective } from 'angular-datatables';
+
+
+//var filesystem = require('fs')
+//const AVATAR_PATH = 'c:\logs'
+
+
+
+@Component({
+    selector: 'app-search-documents',
+    templateUrl: './search-documents.component.html',
+  styleUrls: ['./search-documents.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
+
+})
+export class SearchDocumentsComponent implements AfterViewInit {
+  versionAng = 'Angular: v' + VERSION.full;
+
+  //dtOptions: DataTables.Settings = {};
+  //@ViewChild(DataTableDirective)
+  //private datatableElement: DataTableDirective;
+
+  //format(d) {
+  //  // `d` is the original data object for the row
+  //  return `<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">
+  //      <tr>
+  //          <td>Full name:</td>
+  //          <td>${d.firstName} ${d.lastName}</td>
+  //      </tr>
+  //      <tr>
+  //          <td>Extra info:</td>
+  //          <td>And any further details here (images etc)...</td>
+  //      </tr>
+  //  </table>`;
+  //}
+  //ngAfterViewInit() {
+  //  const self = this
+  //  this.datatableElement.dtInstance.then(table => {
+  //    // Add event listener for opening and closing details
+  //    $('table tbody').on('click', 'td.details-control', function () {
+  //      var tr = $(this).closest('tr');
+  //      var row = table.row(tr);
+
+  //      if (row.child.isShown()) {
+  //        // This row is already open - close it
+  //        row.child.hide();
+  //        tr.removeClass('shown');
+  //      }
+  //      else {
+  //        // Open this row
+  //        row.child(self.format(row.data())).show();
+  //        tr.addClass('shown');
+  //      }
+  //    });
+  //  })
+  //}
+
+
+
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  files: PrintInvoiceFiles[];
+
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  displayedFileColumns: string[] = ['select', 'fileName', 'numDocs','parentFolder'];
+  pageSizeOptions: number[] = [5, 10, 25, 100];
+
+  clickedRows = new Set<PrintInvoiceFiles>();
+  dataSource = new MatTableDataSource<any>();
+  selection = new SelectionModel<PrintInvoiceFiles>(true, []);
+
+
+  IsWait: boolean = false;
+
+  txtSearchInvoice: string = '';
+  txtLastSearch: string = '';
+  lastSearch: string = '';
+  private url;
+  expandedElement: PrintInvoiceFiles | null;
+
+  //SnackBar options
+  durationInSeconds = 5;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+ 
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, public dialog: MatDialog, private _snackBar: MatSnackBar) {
+    this.url = baseUrl;
+  }
+  ngOnInit(): void {
+    //const dataUrl = 'https://..../data/data.json';
+    //this.dtOptions = {
+    //  ajax: dataUrl,
+    //  columns: [{
+    //    className: 'details-control',
+    //    orderable: false,
+    //    data: null,
+    //    defaultContent: 'details'
+    //  }, {
+    //    title: 'ID',
+    //    data: 'id'
+    //  }, {
+    //    title: 'First name',
+    //    data: 'firstName'
+    //  }, {
+    //    title: 'Last name',
+    //    data: 'lastName'
+    //  }]
+    //};
+  }
+
+  onSubmit(value: string): void {
+    alert('onSubmit value: ' + value);
+
+   
+  }
+
+  //getFileNames(dir) {
+  //  let results = [];
+  //  filesystem.readdir(dir).forEach(function (file) {
+
+  //    file = dir + '/' + file;
+  //    results.push(file);
+  //  });
+
+  //  return results;
+  //}
+
+
+  //public searchDocument(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  //  http.get<FileInfo[]>(baseUrl + 'getfiles').subscribe(result => {
+  //    this.files = result;
+  //  }, error => console.error(error));
+  //}
+  onKeydown(event) {
+    if (event.key === "Enter") {
+      this.searchDocument();
+    }
+  }
+  public searchDocument() {
+    // search no empty string
+    if (this.txtSearchInvoice.trim() != "") {
+      this.IsWait = true;
+      this.lastSearch = this.txtSearchInvoice;
+      this.txtLastSearch = "Fattura/e ricercata/e: '" + this.lastSearch + "'";
+      this.http.get<PrintInvoiceFiles[]>(this.url + 'PrintFiles/searchInAllPath', { params: { fileNameList: this.txtSearchInvoice } }).subscribe(result => {
+        //no results
+        if (result.length == 0) {
+          this.IsWait = false;
+          const dialogConfig = new MatDialogConfig();
+          dialogConfig.data = { title: "Attenzione", content: "Non sono stati trovati risultati per la ricerca '" + this.lastSearch + "'" };
+          dialogConfig.disableClose = true;
+          let dialogRef = this.dialog.open(AlertCloseComponent, dialogConfig);
+
+          dialogRef.afterClosed().subscribe(value => {
+            console.log(`Dialog sent: ${value}`);
+          });
+          this.files = result;
+          //let dialogRefYesNo = this.dialog.open(AlertYesNoComponent, dialogConfig);
+          //dialogRefYesNo.afterClosed().subscribe(value => {
+          //  console.log(`Dialog sent: ${value}`);
+          //  if (value) {
+          //    this.IsWait = true;
+          //    // search in DB
+          //    this.http.get<PrintInvoiceFiles[]>(this.url + 'PrintFiles/ondb', { params: { fileName: this.lastSearch } }).subscribe(result => {
+          //      this.files = result;
+          //      this.txtLastSearch = "Fattura ricercata: '" + this.lastSearch + "' in [DDM ANNI PRECEDENTI] ";
+          //      this.dataSource = new MatTableDataSource<PrintInvoiceFiles>(this.files);
+          //      this.dataSource.paginator = this.paginator;
+          //      this.IsWait = false;
+          //    }, error => console.error(error));
+          //  }
+          //  else {
+          //    this.files = result;
+          //    this.dataSource = new MatTableDataSource<PrintInvoiceFiles>(this.files);
+          //  }
+          //});
+        }
+        else {
+          this.IsWait = false;
+          this.files = result;
+          this.dataSource = new MatTableDataSource<PrintInvoiceFiles>(this.files);
+          this.dataSource.paginator = this.paginator;
+        }
+      }, error => {
+        console.error(error);
+        this.openSnackBar("Si è verificato un errore: " + error.error.message, "X", "red-snackbar");
+        this.IsWait = false;
+      });
+    }
+    else {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = { title: "Attenzione", content: "Occorre inserire un numero fattura da ricercare"};
+      let dialogRef = this.dialog.open(AlertCloseComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(value => {
+        console.log(`Dialog sent: ${value}`);
+      });
+
+    }
+    this.txtSearchInvoice = '';
+   
+  }
+
+  public clickedOnRow(row) {
+    // Selected rows
+    //this.clickedRows.clear();
+
+    if (this.clickedRows.has(row)) {
+      this.clickedRows.delete(row);
+    } else {
+      this.clickedRows.add(row);
+    }    
+    this.selection.toggle(row);
+  }
+
+  public openSelected() {
+    // open details
+    const dialogConfig = new MatDialogConfig();
+    var fileSelected = new PrintInvoiceFilesList();
+    fileSelected.printInvoiceFiles = [...this.clickedRows];
+    dialogConfig.data = fileSelected;
+    dialogConfig.disableClose = true;
+    let dialogRef = this.dialog.open(DetailInvoicesComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(value => {
+      console.log(`Dialog sent: ${value}`);
+      if (value !== undefined) {
+        if (value.code === "0") {
+          this.openSnackBar("Documento Stampato", "X", "green-snackbar");
+        }
+        else {
+          this.openSnackBar("Si è verificato un errore: " + value.message, "X", "red-snackbar");
+        }
+      } 
+        this.selection.clear();
+        this.clickedRows.clear();
+     
+      //if (value !== undefined) {
+      //  if (value) {
+      //    this.openSnackBar("Documento Stampato", "X", "green-snackbar");
+      //  }
+      //  else {
+      //    this.openSnackBar("Si è verificato un errore", "X", "red-snackbar");
+      //  }
+
+      //}
+
+    });
+  }
+
+  buildMultiInvoice() {
+    const result = new PrintInvoiceFiles();
+    this.clickedRows.forEach(row => {
+
+    });
+    return result;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  isOneSelected() {
+    return this.selection.selected.length > 0 && this.files.length > 0;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.clickedRows.clear();
+    }
+    else {
+      this.dataSource.data.forEach(row => {
+        this.selection.select(row);
+        if (!this.clickedRows.has(row)) {
+          this.clickedRows.add(row);
+        }
+      });
+    }
+      
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: PrintInvoiceFiles): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.fileName}`;
+  }
+
+  openSnackBar(message:string, label:string, className:string) {
+    this._snackBar.open(message, label, {
+      duration: this.durationInSeconds * 1000,
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      panelClass: [className],
+    });
+  }
+}
+
+//interface PrintInvoiceFiles {
+//  fileName: string;
+//  numDocs: number;
+//  invoiceFiles: InvoiceFile[];
+//}
+//interface InvoiceFile {
+//  fullPath: string;
+//  fileName: string;
+//  numCopy: number;
+//  toSign: boolean;
+//  signPosition: string;
+//  signOrientation: string;
+//  extension: string;
+//  icon: string;
+//  type: string;
+//}
+interface Response {
+  code: string;
+  message: string;
+}

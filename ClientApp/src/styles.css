@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Provide sufficient contrast against white background */
+@import '~material-design-icons/iconfont/material-icons.css';
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+.blue-snackbar {
+  background: #2196F3;
+}
+.green-snackbar {
+  background: #00d11b;
+  color: white;
+}
+  .green-snackbar button {
+    background-color: #41fc86;
+    color: white;
+    border: none;
+  }
+.red-snackbar {
+  background: #F44336;
+  color: white;
+}
+  .red-snackbar button {
+    background-color: #F44336;
+    color: white !important;
+    border: none;
+  }
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: #1b6ec2;
+}
+
+.mat-button.mat-accent, .mat-icon-button.mat-accent, .mat-stroked-button.mat-accent {
+  color: #1b6ec2;
+}
