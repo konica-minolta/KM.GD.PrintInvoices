@@ -75,13 +75,6 @@ namespace KM.GD.PrintInvoices.Controllers
         
       }
 
-      //[System.Runtime.InteropServices.DllImport("advapi32.dll", SetLastError = true)]
-      //private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword,
-      //int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
-
-      //[System.Runtime.InteropServices.DllImport("kernel32.dll")]
-      //private static extern Boolean CloseHandle(IntPtr hObject);
-
       [HttpGet]
       public IActionResult GetFiles(string fileNameList)
       {
@@ -98,33 +91,6 @@ namespace KM.GD.PrintInvoices.Controllers
            
             PrintInvoiceFiles pf = new PrintInvoiceFiles();
 
-
-            //TO OPTIMIZE RESULT DURING SEARCH 
-            //
-            //foreach (string itemFile in Directory.EnumerateFiles(folder, string.Format("*{0}*.pdf; *{0}*.xls; *{0}*.xlsx", fileName)))
-            //{
-            //   string _fileName = Path.GetFileName(itemFile);
-
-            //   PrintInvoiceFiles pif = new PrintInvoiceFiles();
-            //   pif.FileName = _fileName;
-            //   retVal.Add(pf);
-            //} 
-
-
-            //Regex reg = new Regex("("+fileName+")");
-
-            //List<string> files = Directory.GetFiles(folder, string.Format("*{0}*.pdf; *{0}*.xls; *{0}*.xlsx", fileName)).ToList();
-            //.Where(path => reg.IsMatch(path))
-            //.ToList();
-
-
-            //UserCredentials credentials = new UserCredentials(domain, username, password);
-            //using SafeAccessTokenHandle userHandle = credentials.LogonUser(LogonType.Interactive);
-            //var someResult = System.Security.Principal.WindowsIdentity.RunImpersonated(userHandle, () => {
-            //   // do whatever you want as this user.
-            //   return something;
-            //});
-
             if (!Directory.Exists(folderToday))
             {
                Directory.CreateDirectory(folderToday);
@@ -135,20 +101,6 @@ namespace KM.GD.PrintInvoices.Controllers
                Directory.CreateDirectory(folderThisYear);
                _logger.LogWarning("Created Folder: {0}", folderThisYear);
             }
-
-            //IntPtr token = IntPtr.Zero;
-            //var success = LogonUser("username", "domainname", "password", 2, 0, ref token);
-            //if (success)
-            //{
-
-            //   using (WindowsImpersonationContext person = new WindowsIdentity(token).Impersonate())
-            //   {
-            //      string[] allImgs = Directory.GetFiles(@"\\remotemachine\share\folder");
-
-            //      person.Undo();
-            //      CloseHandle(token);
-            //   }
-            //}
 
             string[] arrfileName = fileNameList.Split(',');
             List<string> files = new List<string>();
@@ -175,11 +127,6 @@ namespace KM.GD.PrintInvoices.Controllers
          _logger.LogInformation("START - Search File on DB: {0}", fileName);
          List<PrintInvoiceFiles> retVal = new List<PrintInvoiceFiles>();
          PrintInvoiceFiles pf = new PrintInvoiceFiles();
-         //string folder = _configuration["PastYearsFolderPath"];
-         //pf.FileName = "MyDB_FileTEST_"+fileName ;
-         //pf.NumDocs = 1;
-         //pf.InvoiceFiles = new List<InvoiceFile>() { new InvoiceFile() { FileName = fileName } };or
-         //retVal.Add(pf);
 
          List<IndexedFile> listIdexedFiles = _context.IndexedFiles.Where(f => f.FILE_NAME.Contains(fileName)).ToList();
          retVal = ConvertFilesFullPathToObj( listIdexedFiles.Select(fl => fl.FULL_PATH).ToList(), DateTime.Now.Year-1);
@@ -235,18 +182,6 @@ namespace KM.GD.PrintInvoices.Controllers
                      _logger.Log(LogLevel.Debug, "File list: {0}", currFilesRes);
                      retVal.AddRange(ConvertFilesFullPathToObj(currFilesRes, DateTime.Now.Year));
                   }
-
-                  //if (currFilesRes.Count == 0)
-                  //{
-                  //   List<IndexedFile> listIdexedFiles = _context.IndexedFiles.Where(f => f.FILE_NAME.Contains(fileName)).ToList();
-                  //   retVal.AddRange(ConvertFilesFullPathToObj(listIdexedFiles.Select(fl => fl.FULL_PATH).ToList(), DateTime.Now.Year - 1));
-                  //}
-                  //else
-                  //{
-                  //   _logger.LogDebug("File list: {0}", currFilesRes);
-                  //   _logger.Log(LogLevel.Debug, "File list: {0}", currFilesRes);
-                  //   retVal.AddRange(ConvertFilesFullPathToObj(currFilesRes, DateTime.Now.Year));
-                  //}
                }
             }
          }
@@ -311,14 +246,6 @@ namespace KM.GD.PrintInvoices.Controllers
                pdo.PritedOrderItems = new List<PrintedOrderItems>();
                foreach (PrintedOrderItems itemPOI in itemPO.PritedOrderItems)
                {
-                  ////set printed status
-                  //RestRequest reqChangeStatus = new RestRequest(string.Format("api/order-item/{0}/update", itemPOI.ORDER_ITEM_ID), DataFormat.Json);
-                  //reqChangeStatus.Parameters.Clear();
-                  //reqChangeStatus.AddHeader("apikey", _configuration["AccurioApiKey"]);
-                  //reqChangeStatus.AddHeader("Content-Type", "application/json");
-                  //reqChangeStatus.AddBody("{'workStepId': 'STAMPATO', 'stateId': 'STAMPATODONE' }", RestSharp.Serialization.ContentType.Json);
-                  //var changeStatusResponse = client.Post<ResponsePrintingOrderItems>(reqChangeStatus);
-
                   // get ids of WorkFlow and state
                   client.ClearHandlers();
                   var requestGetProducts = new RestRequest("api/products");
@@ -358,19 +285,12 @@ namespace KM.GD.PrintInvoices.Controllers
                   AccurioState accurioState = new AccurioState() { status = "read" };
                   request.AddJsonBody(accurioState);
                   var reprintOrderResponse = client.Post(request);
-                  
-                  
-                  //rpoi.details.orderItemId
-                  //pdo.PritedOrderItems.Add(new PrintedOrderItems() { ORDER_ITEM_ID = rpoi.details.orderItemId, STATE = rpoi.details.workstep });
-
-
 
                   itemPOI.STATE = _configuration["WebClientConfig:WfStatePrinted"]; //"Stampato";
                   
                }
                itemPO.STATE = _configuration["WebClientConfig:WfStatePrinted"];// "Stampato";
                itemPO.DATE = DateTime.Now;
-               //_context.PrintedOrders.Add(pdo);
 
                _logger.LogInformation("END - ReprintOrder: orderId {0}; orderItemId: {1} ", orderId, string.Join(',', pdo.PritedOrderItems.Select(a => a.ORDER_ITEM_ID).ToArray()));
             }
@@ -451,7 +371,6 @@ namespace KM.GD.PrintInvoices.Controllers
             {
                lstFileToPrint.AddRange(itemPIF.InvoiceFiles.OrderBy(p => p.Position));
             }
-            //lstFileToPrint.AddRange((List<InvoiceFile>)filesToPrint.PrintInvoiceFiles.Select(invF => invF.InvoiceFiles));
 
             foreach (InvoiceFile itemInvoiceFile in lstFileToPrint)
             {
@@ -547,67 +466,6 @@ namespace KM.GD.PrintInvoices.Controllers
                {
                   throw new Exception(resp.StatusDescription);
                }
-
-               //    var requestUpload = new RestRequest("api/uploadStream", DataFormat.Json);
-               // requestUpload.Parameters.Clear();
-               // requestUpload.AddHeader("apikey", _configuration["AccurioApiKey"]);
-               //// requestUpload.AddHeader("Content-Type", "application/json");
-               // requestUpload.AddHeader("Content-Type", "application/octet-stream");
-               // requestUpload.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
-               // requestUpload.Method = Method.POST;
-
-               // requestUpload.AddFile(filesToPrint.FileName, _tempConcatenatedPdfFile);
-               // //var arrBytes = System.IO.File.ReadAllBytes(_tempConcatenatedPdfFile);
-               // //requestUpload.AddJsonBody(arrBytes);
-               // _logger.LogDebug("Request: {0}; {1}; {2} - {3}", requestUpload.Parameters, requestUpload.Method, requestUpload.Resource, requestUpload.Body);
-               // //var response = client.Post(requestUpload);
-               // var response = client.Execute(requestUpload);
-               // _logger.LogDebug("Response: {0}; Status:{1}, {2}, {3}; Headers:{4}, Error:{5} {6}; Content:{7}", response.ResponseUri, response.StatusCode, response.StatusDescription, response.ResponseStatus, response.Headers, response.ErrorMessage, response.ErrorException, response.Content);
-               // CustomJsonSerializer cs = new CustomJsonSerializer();
-               // UploadFileResponse ufResp = cs.Deserialize<UploadFileResponse>(response);
-
-               // 2) Create Order
-
-               //webRequest = (HttpWebRequest)WebRequest.Create(new Uri(new Uri(_configuration["UrlAccurio"]), "api/createOrder"));
-               //webRequest.Method = "POST";
-               //webRequest.ContentType = "application/json";
-               //webRequest.Headers.Add("apikey", _configuration["AccurioApiKey"]);
-
-               //PrintOrder po = new PrintOrder();
-               //po.orderItems = new List<OrderItem>();
-               //po.orderItems.Add(new OrderItem() { product = filesToPrint.PrinterToUse, pageSources = new List<PageSource>() { new PageSource() { tempFileName = ufResp.tempFileName, originalFileName= filesToPrint.FileName } } });
-               //po.prefix = "XI";
-
-               //string requestInputSerialized = JsonConvert.SerializeObject(po,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-               //webRequest.ContentLength = requestInputSerialized.Length;
-               //using (var sw = new StreamWriter(webRequest.GetRequestStream()))
-               //{
-               //   sw.Write(requestInputSerialized);
-               //   sw.Flush();
-               //   sw.Close();
-               //}
-               //resp = webRequest.GetResponse() as HttpWebResponse;
-               //ResponsePrintOrder rpo;
-               //if (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created)
-               //{
-               //   using (Stream respStream = resp.GetResponseStream())
-               //   {
-               //      StreamReader reader = new StreamReader(respStream, Encoding.UTF8);
-               //      string data = reader.ReadToEnd();
-               //      if (!string.IsNullOrEmpty(data))
-               //      {
-               //         rpo = JsonConvert.DeserializeObject<ResponsePrintOrder>(data);
-               //      }
-               //      else
-               //      {
-               //         throw new Exception("Create Order Response is empty");
-               //      }
-               //   }
-               //}
-               //else
-               //{
-               //   throw new Exception(resp.StatusDescription);
-               //}
 
                var requestCreateOrder = new RestRequest("api/createOrder", DataFormat.Json);
                requestCreateOrder.Parameters.Clear();
@@ -875,21 +733,10 @@ namespace KM.GD.PrintInvoices.Controllers
             {
                //setup PdfStamper
                var stamper = new PdfStamper(oldFile, newFileStream);
-
-               ////iterate through the pages in the original file
-               //for (var i = 1; i <= oldFile.NumberOfPages; i++)
-               //{
-               //   //get canvas for current page
-               //   var canvas = stamper.GetOverContent(i);
-               //   //add image with pre-set position and size
-               //   canvas.AddImage(image);
-               //}
-
                //get canvas for last page
                PdfContentByte canvas = stamper.GetOverContent(oldFile.NumberOfPages);
                //add image with pre-set position and size
                canvas.AddImage(image);
-
                stamper.Close();
             }
 
@@ -970,7 +817,6 @@ namespace KM.GD.PrintInvoices.Controllers
          // Find the root file
          List<PrintInvoiceFiles> retVal = new List<PrintInvoiceFiles>();
          var filesRoot = GetBaseRootFiles(fullPath);
-         //var filesRoot = fullPath.Where(f => (!(Path.GetFileName(f)).Contains('_') || (Path.GetFileNameWithoutExtension(f)).ToUpper().EndsWith("_PF")) && (Path.GetExtension(f).ToLower() == ".pdf")).OrderBy(f => f);
          _logger.LogDebug("File Invoice list: {0}", filesRoot);
          foreach (string itemFile in filesRoot)
          {
@@ -998,14 +844,6 @@ namespace KM.GD.PrintInvoices.Controllers
             }};
             pif.NumDocs++;
             // Find all child files
-
-            //Separate root file for every directory
-            //var filesChild = fullPath.Where(f => (Path.GetFullPath(f).Contains(Path.Combine(Path.GetDirectoryName(itemFile), pif.FileName) + '_'  ) || 
-            //                                 Path.GetFullPath(f).Contains(Path.Combine(Path.GetDirectoryName(itemFile), "SD"+pif.FileName) + '_')|| 
-            //                                 Path.GetFullPath(f).Contains(Path.Combine(Path.GetDirectoryName(itemFile), "FI" + year + pif.FileName) + '_') ) &&
-            //                                 (!f.Contains("_SIGNED")) &&
-            //                                 (Path.GetExtension(f).ToLower() == ".pdf")
-            //                                 );
             string normalizedFileName = pif.FileName;
             if (normalizedFileName.ToUpper().EndsWith("_PF"))
             {

@@ -113,10 +113,7 @@ export class ReprintDocumentsComponent {
     //Filter on invoice number event
     this.numColumnFilter.valueChanges.subscribe((numColumnFilterValue) => {
       this.filteredValues.invoicE_FILE = numColumnFilterValue;
-      this.pageParameterChanged.invoiceName = numColumnFilterValue;
-      //this.dataSource.filterPredicate = this.createFilter();
-      //this.dataSource.filter = JSON.stringify(this.filteredValues);
- 
+      this.pageParameterChanged.invoiceName = numColumnFilterValue; 
     });
   
   }
@@ -185,36 +182,9 @@ export class ReprintDocumentsComponent {
     let filterFunction = function (data: any, filter: string): boolean {
       let searchTerms = JSON.parse(filter);
       console.log(searchTerms);
-
       let inoiceNuberSearch = data.invoicE_FILE.trim().toLowerCase().indexOf(searchTerms.invoicE_FILE.trim().toLowerCase()) != -1;
       let dateSearched = data.date >= searchTerms.dateFrom && data.date <= searchTerms.dateTo;
-
-
       return inoiceNuberSearch || dateSearched;
-      //return data.invoicE_FILE.trim().toLowerCase().includes(filter.trim().toLowerCase());
-  
-
-      //var dataStr = Object.keys(data).reduce(function (currentTerm, key) {
-      //  return currentTerm + data[key] + '◬';
-      //}, '').toLowerCase();
-      //var transformedFilter = filter.trim().toLowerCase();
-
-      //return dataStr.indexOf(transformedFilter) != -1;
-    
-
-      //let idSearch = data.id.toString().indexOf(searchTerms.id) != -1
-
-      //let nameSearch = () => {
-      //  let found = false;
-      //  searchTerms.name.trim().toLowerCase().split(' ').forEach(word => {
-      //    if (data.name.toLowerCase().indexOf(word) != -1) { found = true }
-      //  });
-      //  return found
-      //}
-      //return nameSearch && idSearch
-
-
-
 
     }
     return filterFunction;
@@ -269,15 +239,10 @@ export class ReprintDocumentsComponent {
       if (result.results.length == 0) {
       }
       else {
-     
         this.length = result.rowCount;
         this.pageIndex = event.pageIndex;
-        this.pageSize = event.pageSize;
-
-      
+        this.pageSize = event.pageSize;    
         this.printedFiles = result.results
-       //this.printedFiles.push(...result.results);
-
         this.dataSource = new MatTableDataSource<PrintedOrder>(this.printedFiles);
       }
       this.IsWait = false;
@@ -303,9 +268,7 @@ export class ReprintDocumentsComponent {
       console.error(error);
      
     });
-
   }
-
 
   exportTable() {
     TableUtil.exportTableToExcel("printedFilesTable");

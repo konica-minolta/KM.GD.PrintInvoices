@@ -19,14 +19,6 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { each } from 'jquery';
 import { PrintInvoiceFilesList } from '../_models/PrintInvoiceFilesList';
 
-//import { DataTableDirective } from 'angular-datatables';
-
-
-//var filesystem = require('fs')
-//const AVATAR_PATH = 'c:\logs'
-
-
-
 @Component({
     selector: 'app-search-documents',
     templateUrl: './search-documents.component.html',
@@ -42,48 +34,6 @@ import { PrintInvoiceFilesList } from '../_models/PrintInvoiceFilesList';
 })
 export class SearchDocumentsComponent implements AfterViewInit {
   versionAng = 'Angular: v' + VERSION.full;
-
-  //dtOptions: DataTables.Settings = {};
-  //@ViewChild(DataTableDirective)
-  //private datatableElement: DataTableDirective;
-
-  //format(d) {
-  //  // `d` is the original data object for the row
-  //  return `<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">
-  //      <tr>
-  //          <td>Full name:</td>
-  //          <td>${d.firstName} ${d.lastName}</td>
-  //      </tr>
-  //      <tr>
-  //          <td>Extra info:</td>
-  //          <td>And any further details here (images etc)...</td>
-  //      </tr>
-  //  </table>`;
-  //}
-  //ngAfterViewInit() {
-  //  const self = this
-  //  this.datatableElement.dtInstance.then(table => {
-  //    // Add event listener for opening and closing details
-  //    $('table tbody').on('click', 'td.details-control', function () {
-  //      var tr = $(this).closest('tr');
-  //      var row = table.row(tr);
-
-  //      if (row.child.isShown()) {
-  //        // This row is already open - close it
-  //        row.child.hide();
-  //        tr.removeClass('shown');
-  //      }
-  //      else {
-  //        // Open this row
-  //        row.child(self.format(row.data())).show();
-  //        tr.addClass('shown');
-  //      }
-  //    });
-  //  })
-  //}
-
-
-
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -119,50 +69,14 @@ export class SearchDocumentsComponent implements AfterViewInit {
     this.url = baseUrl;
   }
   ngOnInit(): void {
-    //const dataUrl = 'https://..../data/data.json';
-    //this.dtOptions = {
-    //  ajax: dataUrl,
-    //  columns: [{
-    //    className: 'details-control',
-    //    orderable: false,
-    //    data: null,
-    //    defaultContent: 'details'
-    //  }, {
-    //    title: 'ID',
-    //    data: 'id'
-    //  }, {
-    //    title: 'First name',
-    //    data: 'firstName'
-    //  }, {
-    //    title: 'Last name',
-    //    data: 'lastName'
-    //  }]
-    //};
+
   }
 
   onSubmit(value: string): void {
     alert('onSubmit value: ' + value);
-
-   
   }
 
-  //getFileNames(dir) {
-  //  let results = [];
-  //  filesystem.readdir(dir).forEach(function (file) {
 
-  //    file = dir + '/' + file;
-  //    results.push(file);
-  //  });
-
-  //  return results;
-  //}
-
-
-  //public searchDocument(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-  //  http.get<FileInfo[]>(baseUrl + 'getfiles').subscribe(result => {
-  //    this.files = result;
-  //  }, error => console.error(error));
-  //}
   onKeydown(event) {
     if (event.key === "Enter") {
       this.searchDocument();
@@ -187,25 +101,7 @@ export class SearchDocumentsComponent implements AfterViewInit {
             console.log(`Dialog sent: ${value}`);
           });
           this.files = result;
-          //let dialogRefYesNo = this.dialog.open(AlertYesNoComponent, dialogConfig);
-          //dialogRefYesNo.afterClosed().subscribe(value => {
-          //  console.log(`Dialog sent: ${value}`);
-          //  if (value) {
-          //    this.IsWait = true;
-          //    // search in DB
-          //    this.http.get<PrintInvoiceFiles[]>(this.url + 'PrintFiles/ondb', { params: { fileName: this.lastSearch } }).subscribe(result => {
-          //      this.files = result;
-          //      this.txtLastSearch = "Fattura ricercata: '" + this.lastSearch + "' in [DDM ANNI PRECEDENTI] ";
-          //      this.dataSource = new MatTableDataSource<PrintInvoiceFiles>(this.files);
-          //      this.dataSource.paginator = this.paginator;
-          //      this.IsWait = false;
-          //    }, error => console.error(error));
-          //  }
-          //  else {
-          //    this.files = result;
-          //    this.dataSource = new MatTableDataSource<PrintInvoiceFiles>(this.files);
-          //  }
-          //});
+       
         }
         else {
           this.IsWait = false;
@@ -235,7 +131,6 @@ export class SearchDocumentsComponent implements AfterViewInit {
 
   public clickedOnRow(row) {
     // Selected rows
-    //this.clickedRows.clear();
 
     if (this.clickedRows.has(row)) {
       this.clickedRows.delete(row);
@@ -267,16 +162,6 @@ export class SearchDocumentsComponent implements AfterViewInit {
         this.selection.clear();
         this.clickedRows.clear();
      
-      //if (value !== undefined) {
-      //  if (value) {
-      //    this.openSnackBar("Documento Stampato", "X", "green-snackbar");
-      //  }
-      //  else {
-      //    this.openSnackBar("Si è verificato un errore", "X", "red-snackbar");
-      //  }
-
-      //}
-
     });
   }
 
@@ -334,22 +219,7 @@ export class SearchDocumentsComponent implements AfterViewInit {
   }
 }
 
-//interface PrintInvoiceFiles {
-//  fileName: string;
-//  numDocs: number;
-//  invoiceFiles: InvoiceFile[];
-//}
-//interface InvoiceFile {
-//  fullPath: string;
-//  fileName: string;
-//  numCopy: number;
-//  toSign: boolean;
-//  signPosition: string;
-//  signOrientation: string;
-//  extension: string;
-//  icon: string;
-//  type: string;
-//}
+
 interface Response {
   code: string;
   message: string;

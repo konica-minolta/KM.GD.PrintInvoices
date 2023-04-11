@@ -32,7 +32,6 @@ namespace KM.GD.PrintInvoices.Services
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
             User user = _context.Users.SingleOrDefault(x =>  x.Username.Replace(@"\\", @"\") == model.Username);
-        // user = _context.Users.FirstOrDefault();
             // validate
             if (user == null )
             throw new AppException("Username or password is incorrect");
@@ -84,9 +83,6 @@ namespace KM.GD.PrintInvoices.Services
             if (model.Username != user.Username && _context.Users.Any(x => x.Username == model.Username))
                 throw new AppException("Lo Username '" + model.Username + "' esiste già.");
 
-         // hash password if it was entered
-         //if (!string.IsNullOrEmpty(model.Password))
-         //    user.PasswordHash = BCryptNet.HashPassword(model.Password);
 
          // copy model to user and save
          user.FirstName = model.FirstName;

@@ -12,16 +12,13 @@ using System.Security.Principal;
 
 namespace KM.GD.PrintInvoices.Controllers
 {
-   //[Authorize]
-   //[AllowAnonymous]
+
    [Route("api/[controller]")]
    [ApiController]
    public class UsersController : ControllerBase
    {
       private IUserService _userService;
-
       private readonly ILogger<UsersController> _logger;
-      // requires using Microsoft.Extensions.Configuration;
       private readonly IConfiguration _configuration;
       private readonly IOptions<ConfigDocumentsType> _docsSetting;
       private readonly UserContext _context;
@@ -37,7 +34,6 @@ namespace KM.GD.PrintInvoices.Controllers
          _context = context;
       }
 
-      //[AllowAnonymous]
       [HttpPost("authenticate")]
       public IActionResult Authenticate(AuthenticateRequest model)
       {
@@ -55,7 +51,6 @@ namespace KM.GD.PrintInvoices.Controllers
         
       }
 
-      //[AllowAnonymous]
       [HttpPost("register")]
       public IActionResult Register(RegisterRequest model)
       {

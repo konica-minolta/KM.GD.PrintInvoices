@@ -40,7 +40,6 @@ import { faSquare as farSquare, faCheckSquare as farCheckSquare, faFilePdf as fa
 
 import { WinAuthInterceptor } from './common/winauth-interceptor';
 // used to create backend
-//import { BackendProvider } from './_helpers';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AlertComponent } from './_components';
 const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
@@ -48,9 +47,6 @@ const usersModule = () => import('./users/users.module').then(x => x.UsersModule
 
 import { AuthGuard } from './_helpers';
 import { AppConfig } from './app.config';
-
-
-//import { DataTablesModule } from "angular-datatables";
 
 @NgModule({
   declarations: [
@@ -100,25 +96,16 @@ import { AppConfig } from './app.config';
 ], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,
     MatToolbarModule
-      //DataTablesModule,
+ 
   ],
   providers: [
     MatDatepickerModule,
     MatNativeDateModule,
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },// default localize for datapicker
-    //{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { strict: true } },
     AppConfig,
     { provide: APP_INITIALIZER, useFactory: (config: AppConfig) => () => config.load(), deps: [AppConfig], multi: true },
-
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
-
-        // provider used to create fake backend
-    // BackendProvider
-
-    //provide: HTTP_INTERCEPTORS,
-    //useClass: WinAuthInterceptor,
-    //multi: true
 
   ],
   bootstrap: [

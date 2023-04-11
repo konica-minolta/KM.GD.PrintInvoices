@@ -26,10 +26,6 @@ export class AddEditComponent implements OnInit {
         this.isAddMode = !this.id;
         
         // password not required in edit mode
-        //const passwordValidators = [Validators.minLength(6)];
-        //if (this.isAddMode) {
-        //    passwordValidators.push(Validators.required);
-        //}
 
         this.form = this.formBuilder.group({
             firstName: ['', Validators.required],

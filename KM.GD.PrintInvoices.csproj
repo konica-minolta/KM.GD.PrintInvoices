@@ -47,7 +47,6 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\app.config.ts" />
     <None Remove="ClientApp\src\app\common\winauth-interceptor.ts" />
-    <None Remove="ClientApp\src\app\service\account.service.ts" />
     <None Remove="ClientApp\src\app\utils\tableUtils.ts" />
     <None Remove="ClientApp\src\app\_helpers\auth.guard.ts" />
     <None Remove="ClientApp\src\app\_helpers\backend.ts" />
@@ -90,7 +89,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\account\" />
-    <Folder Include="ClientApp\src\app\service\" />
     <Folder Include="Entities\" />
     <Folder Include="Logs\" />
     <Folder Include="Services\" />

@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-//import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { FormControl, Validators } from '@angular/forms';
 import { PrintInvoiceFiles } from '../../_models/PrintInvoiceFiles';
 import { InvoiceFile } from '../../_models/InvoiceFile';
@@ -47,13 +46,11 @@ export class DetailInvoicesComponent {
       this.printers = result;
     }, error => console.error(error));
   }
- /* faFilePdf = faFilePdf;*/
+
   private url;
   printers: Printer[];
   displayedFileColumns: string[] = ['icon', 'fileName', 'position', 'shortPath', 'type', 'numCopy', 'toSign'];
-  /*rebuildedData = this.buildMultiInvoice(this.data);*/
-  dataSource = new MatTableDataSource<PrintInvoiceFiles[]>(this.data.printInvoiceFiles);
-  
+  dataSource = new MatTableDataSource<PrintInvoiceFiles[]>(this.data.printInvoiceFiles); 
   columnsToDisplay = ['fileName', 'parentFolder'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement: PrintInvoiceFiles | null;
@@ -66,7 +63,6 @@ export class DetailInvoicesComponent {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   ngAfterViewInit() {
-   // this.dataSource = new MatTableDataSource<PrintInvoiceFiles[]>(this.data);
     this.dataSource.paginator = this.paginator;
   }
 
@@ -80,15 +76,6 @@ export class DetailInvoicesComponent {
       this.clicked = false;
       return;
     }
-
-    //var invoicesToSend = new PrintInvoiceFilesList();
-    //var invoicesToSend = this.buildPrintInvoiceList(this.data);
-    //invoicesToSend.note = this.txtNoteInvoice;
-    //invoicesToSend.printerToUse = this.selectedPrinter;
- 
-
-    //invoicesToSend.invoiceFiles; //= this.dataSource.data.map(a => { return { ...a } });
-
     this.data.note = this.txtNoteInvoice;
     this.data.printerToUse = this.selectedPrinter;
     this.http.post<Response>(this.url + 'PrintFiles/printinvoice', this.data).subscribe(result => {

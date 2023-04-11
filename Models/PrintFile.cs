@@ -15,9 +15,6 @@ namespace KM.GD.PrintInvoices
       public int NumDocs { get; set;  }
       public List<InvoiceFile> InvoiceFiles { get; set; }
       public string ParentFolder { get; set; }
-
-      //public string Note { get; set; }
-      //public string PrinterToUse { get; set; }
    }
 
    public class InvoiceFile

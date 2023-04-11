@@ -2,9 +2,7 @@
   <mat-form-field class="local-full-width" appearance="fill">
     <mat-label>Numero/i Fattura </mat-label>
     <input matInput type="text" [(ngModel)]="txtSearchInvoice" #SearchInvoice name="search" (keydown)="onKeydown($event)" placeholder="Per cercare più fatture usare la virgola [ , ] come separatore">
-    <!--<button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
-      <mat-icon>close</mat-icon>
-    </button>-->
+
   </mat-form-field>
   <button mat-raised-button class="btn btn-primary btn-rounded" (click)="searchDocument()" formtarget="_blank">Cerca Fatture</button>
 
@@ -12,19 +10,6 @@
 </div>
 
 
-<!--dialog-->
-<!--<h1 mat-dialog-title>Attenzione</h1>
-<div mat-dialog-content>Inserire un numero fattura da ricercare</div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-</div>-->
-
-
-
-
-<!--<br>Search Invoice<br>
-<input type="text" [(ngModel)]="txtSearchInvoice" id="SearchInvoice" placeholder="Search..." aria-label="Search through site content" required >-->
-<!--<button class="btn btn-primary btn-rounded" (click)="searchDocument()" formtarget="_blank">Search</button>-->
 <br />
 <mat-progress-spinner mode="indeterminate" *ngIf="IsWait"></mat-progress-spinner>
 <div class="container" *ngIf="files">
@@ -60,8 +45,6 @@
     <ng-container matColumnDef="icon">
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let element" class="status">
-        <!--<mat-icon (click)="expandedElement = expandedElement === element ? null : element">{{expandedElement === element ? 'expand_less' : 'expand_more'}}</mat-icon>-->
-        <!--<mat-icon> {{element.extension}} </mat-icon>-->
 
       </td>
     </ng-container>
@@ -87,18 +70,6 @@
   </table>
   <br />
   <button mat-raised-button class="btn btn-primary btn-rounded" [disabled]="!isOneSelected()" (click)="openSelected()">Visualizza Dettaglio Fatture Selezionate</button>
-
-  <!--<mat-paginator [pageSizeOptions]="pageSizeOptions" aria-label="Select page" showFirstLastButtons [pageSize]="5" [length]="5">
-  </mat-paginator>-->
-  <!--<br />
-  <table datatable [dtOptions]="dtOptions" class="row-border hover">
-  </table>-->
-  <!--<md-input-container class="md-block">
-    <label>Address</label>
-    <input ng-model="user.address">
-  </md-input-container>-->
-
-
 
 </div>
 <ng-container>

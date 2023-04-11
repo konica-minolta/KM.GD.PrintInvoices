@@ -32,10 +32,6 @@ namespace KM.GD.PrintInvoices.Controllers
          User user = new User();
          IPrincipal p = HttpContext.User;
          user.Username = p.Identity.Name;
-         //user.FirstName = "First Name";
-         //user.LastName = "Last Name";
-         //user.UpdatedBy = "Me";
-         //user.Token = "my-user-token";
          _logger.LogDebug("Username: {0}; AuthenticationType: {1}; IsAuthenticated: {2} ", p.Identity.Name, p.Identity.AuthenticationType, p.Identity.IsAuthenticated);
          _logger.LogInformation("END - GetPrinters");
          return user;

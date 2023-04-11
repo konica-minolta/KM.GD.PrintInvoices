@@ -3,45 +3,6 @@
   <mat-card class="header-card">Archivio Stampe</mat-card>
   <br />
 
-  <!--<mat-form-field appearance="standard">
-    <mat-label>Filter Col 1</mat-label>
-    <input matInput placeholder="Search columns" #input>
-  </mat-form-field>-->
-  <!--<p>Selected range: {{range.value | json}}</p>-->
-  <!--<div>
-    <form [formGroup]="form" (submit)="applyDateFilter()">
-      <mat-form-field>
-        <input matInput
-               placeholder="Date From"
-               [matDatepicker]="picker1"
-               formControlName="fromDate"
-               required
-               (click)="picker1.open()">
-        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput
-               placeholder="toDate"
-               [matDatepicker]="picker2"
-               formControlName="toDate"
-               required
-               (click)="picker2.open()">
-        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>
-      </mat-form-field>
-      <button class="button-form"
-              mat-raised-button color="accent"
-              (click)="applyDateFilter()"
-              [disabled]="form.invalid">
-        Submit
-      </button>
-      <button mat-raised-button color="accent" type="button" [disabled]="form.invalid">Clear</button>
-    </form>
-    <mat-form-field>
-      <input matInput type="text" #filter (keyup)="doFilter(filter.value)" placeholder="Filter">
-    </mat-form-field>
-  </div>-->
   <mat-card> 
   <div>
     <mat-form-field class="filter-form">
@@ -76,19 +37,9 @@
   <mat-progress-spinner mode="indeterminate" *ngIf="IsWait"></mat-progress-spinner>
   <table id="printedFilesTable" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-    <!--<ng-container matColumnDef="icon">
-    <th mat-header-cell *matHeaderCellDef> </th>
-    <td mat-cell *matCellDef="let element" class="status">-->
-    <!--<mat-icon (click)="expandedElement = expandedElement === element ? null : element">{{expandedElement === element ? 'expand_less' : 'expand_more'}}</mat-icon>-->
-    <!--<mat-icon> {{element.extension}} </mat-icon>-->
-    <!--</td>
-    </ng-container>-->
-
     <ng-container matColumnDef="invoicE_FILE">
       <th mat-header-cell *matHeaderCellDef>
         Numero Fattura
-
-
 
       </th>
       <td mat-cell *matCellDef="let element"> {{element.invoicE_FILE}} </td>

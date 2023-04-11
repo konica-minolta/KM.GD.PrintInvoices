@@ -2,13 +2,8 @@
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <mat-toolbar color="basic">
       <mat-toolbar-row>
-        <!--<button mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>-->
         <a class="navbar-brand" [routerLink]="['/']"><img alt="GD" class="xxx" src="assets/img/LogoGD.png" width="170" height="71" /></a>
-        <h1> X-Invoices</h1>
-       
-
+        <h1> X-Invoices</h1>  
         <span class="menu-spacer"></span>
         <div class="parent">
           <div class="children right-children">
@@ -17,70 +12,11 @@
             <a mat-button *ngIf="isAdmin" [routerLink]="'/users'" routerLinkActive="mat-accent"> Gest. Utenti </a>
             <button mat-button [matMenuTriggerFor]="menu"><fa-icon [icon]="['fas', 'user']"></fa-icon></button>
             <mat-menu #menu="matMenu">
-              <p mat-menu-item>{{winAccount.firstName}} {{winAccount.lastName}} [ {{winAccount.username}} ]</p>
-       
-            </mat-menu>
-            
+              <p mat-menu-item>{{winAccount.firstName}} {{winAccount.lastName}} [ {{winAccount.username}} ]</p> 
+            </mat-menu>          
           </div>
         </div>
       </mat-toolbar-row>
-
-
     </mat-toolbar>
-    <!--<div class="container">
-
-    <a class="navbar-brand" [routerLink]="['/']"><img alt="GD" class="xxx" src="assets/img/LogoGD.png" width="170" height="71" /> X-Invoices</a>
-    <button class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target=".navbar-collapse"
-            aria-label="Toggle navigation"
-            [attr.aria-expanded]="isExpanded"
-            (click)="toggle()">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
-         [ngClass]="{ show: isExpanded }">
-      <ul class="navbar-nav flex-grow">-->
-    <!--<li class="nav-item" [routerLinkActive]="['link-active']">
-    <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
-  </li>-->
-    <!--<li class="nav-item" [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link text-dark" [routerLink]="['/search-documents']">Ricerca Fatture</a>
-        </li>
-        <li class="nav-item" [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link text-dark" [routerLink]="['/reprint-documents']">Ristampa Fatture</a>
-        </li>
-
-
-      </ul>
-    </div>
-  </div>-->
-
-
-
   </nav>
-
-  
-
-
-
-  <!--<app-layout>
-    <mat-sidenav-container>
-      <mat-sidenav #sidenav role="navigation">-->
-        <!--this is a place for us to add side-nav code-->
-      <!--</mat-sidenav>
-      <mat-sidenav-content>-->
-        <!--in here all the content must reside. We will add a navigation header as well-->
-        <!--<main>
-          <router-outlet></router-outlet>
-        </main>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-  </app-layout>-->
-
-
-
 </header>
